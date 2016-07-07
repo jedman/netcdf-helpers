@@ -6,14 +6,14 @@ class ncvar():
    
     def __init__(self, name):
         self.name = name 
-        self.dims = () # tuple with dimension names 
+        self.dims = list() # list with dimension names 
         self.data = [] # array with data
 	self.long_name = ''
         self.units = '' 
         return
     
-    def add_dim(self, dim_name, dim_val):
-        self.dims[dim_name] = dim_val
+    def add_dim(self, dim_name):
+        self.dims.append(dim_name) 
         return
 
 class ncdim():
@@ -29,7 +29,7 @@ class ncdim():
 def create_netcdf(filename, ncvars, ncdims):
     '''takes a dict of ncvar objects and writes to a file'''
      
-    ncfile = nc.Dataset(outfile,'w')
+    ncfile = nc.Dataset(filename,'w')
     
     # first argument is name of variable, second is datatype, third is
     # a tuple with the names of dimensions.
@@ -37,7 +37,7 @@ def create_netcdf(filename, ncvars, ncdims):
     outdims = {}
     for name in ncdims:
         # create dimension 
-        outdims[name] = ncfile.createDimension(name, ncdims[name].shape[0])
+        outdims[name] = ncfile.createDimension(name, ncdims[name].data.shape[0])
         # create a variable matching dimension
         outvars[name] = ncfile.createVariable(name, np.float, (name, )) 
         outvars[name][:] = ncdims[name].data
