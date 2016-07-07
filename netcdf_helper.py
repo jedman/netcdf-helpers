@@ -1,4 +1,4 @@
-import netCDF as nc 
+import netCDF4 as nc 
 import numpy as np
 
 class ncvar():
@@ -27,7 +27,7 @@ class ncdim():
          return 
 
 def create_netcdf(filename, ncvars, ncdims):
-     '''takes a dict of ncvar objects and writes to a file'''
+    '''takes a dict of ncvar objects and writes to a file'''
      
     ncfile = nc.Dataset(outfile,'w')
     
